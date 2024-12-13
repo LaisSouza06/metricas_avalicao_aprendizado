@@ -1,0 +1,38 @@
+# Passo 1: Importar bibliotecas necessárias
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.datasets import make_classification
+from sklearn.ensemble import RandomForestClassifier
+
+# Passo 2: Criar um conjunto de dados fictício para classificação
+X, y = make_classification(n_samples=1000, n_features=20, n_informative=10, n_classes=2, random_state=42)
+
+# Dividir os dados em conjunto de treino e teste (80% treino, 20% teste)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Passo 3: Criar e treinar o modelo de classificação (Random Forest)
+modelo = RandomForestClassifier(random_state=42)
+modelo.fit(X_train, y_train)
+
+# Passo 4: Realizar previsões no conjunto de teste
+y_pred = modelo.predict(X_test)
+
+# Passo 5: Calcular as métricas de avaliação
+acuracia = accuracy_score(y_test, y_pred)
+precisao = precision_score(y_test, y_pred)
+sensibilidade = recall_score(y_test, y_pred)
+f_score = f1_score(y_test, y_pred)
+
+# Calcular a especificidade
+cm = confusion_matrix(y_test, y_pred)
+tn, fp, fn, tp = cm.ravel()  # Verdadeiros Negativos, Falsos Positivos, Falsos Negativos, Verdadeiros Positivos
+especificidade = tn / (tn + fp)
+
+# Passo 6: Exibir as métricas de avaliação
+print(f'Acurácia: {acuracia:.4f}')
+print(f'Precisão: {precisao:.4f}')
+print(f'Sensibilidade (Recall): {sensibilidade:.4f}')
+print(f'F-Score: {f_score:.4f}')
+print(f'Especificidade: {especificidade:.4f}')
